@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules
+
+# pnpm
+pnpm-lock.yaml
+
+# posts
+src/tech
+src/other-stuff
+
+# ignore deployment files
+_deploy.sh
+www
+www.tar.gz
+
+# ignore symlink for the 'tech' repo
+src/assets/img/tech

@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules
+
+# pnpm
+pnpm-lock.yaml
+
+# other
+.deploy.sh

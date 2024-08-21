@@ -1,0 +1,16 @@
+---
+permalink: index.json
+eleventyExcludeFromCollections: true
+---
+[
+{%- for post in collections.post %}
+  {
+    "title": "{{ post.data.title }}",
+    "url": "{{ post.url | url }}",
+    "content": {{ post.templateContent | jsonify }}
+  }
+  {%- unless forloop.last -%}
+  ,
+  {%- endunless -%}
+{% endfor %}
+]

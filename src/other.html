@@ -1,0 +1,21 @@
+---
+layout: layouts/base.html
+title: Fubar
+pagination:
+  data: collections.other
+  reverse: true
+  size: 2
+  alias: posts  
+---
+
+<ul>
+{%- for post in posts -%}
+  <li>{{ post.data.title }}</li>
+{%- endfor -%}
+</ul>
+
+{% if pagination.href.previous %}
+<a href="{{pagination.href.previous}}">Newer Posts</a>
+{% endif %} {% if pagination.href.next %}
+<a href="{{pagination.href.next}}">Older Posts</a>
+{% endif %}
