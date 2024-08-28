@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title }}</title>
-  <!-- <link rel="stylesheet" href="/assets/css/theme-light.css" media="(prefers-color-scheme: light)"> -->
-  <!-- <link rel="stylesheet" href="/assets/css/theme-dark.css" media="(prefers-color-scheme: dark)"> -->
-  <link rel="stylesheet" href="/assets/css/theme-light.css">
-  <link rel="stylesheet" href="/assets/css/site.css">
-</head>
+{% include "./head.html" %}
 <body>
   {%- include "./header.html" %}
+  <div id="search-panel">
+    <div id="pagefind"></div>
+  </div>
   <main>
-    {{ content }}
+    <article>
+      <h1>{{ title }}</h1> 
+      {{ content }}
+    </article>
   </main>
+
   {%- include "./footer.html" %}
+
+  <script src="/pagefind/pagefind-ui.js" defer></script>
+  {% if meta.env == 'development' %}
+  <script src="/assets/js/main.js"></script>
+  {% else %}
+  <script src="/assets/js/main.min.js"></script>
+  {% endif %}
+
 </body>
 </html>

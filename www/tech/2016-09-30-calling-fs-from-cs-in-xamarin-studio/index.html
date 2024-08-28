@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-77648562-1"></script>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="One two buckle shoe">
+  <title>Calling F# from C# in Xamarin Studio</title>
+  <!-- <link rel="stylesheet" href="/assets/css/theme-light.css" media="(prefers-color-scheme: light)"> -->
+  <!-- <link rel="stylesheet" href="/assets/css/theme-dark.css" media="(prefers-color-scheme: dark)"> -->
+  <link rel="stylesheet" href="/assets/css/theme-light.css">
+  
+  <link rel="stylesheet" href="/assets/css/site.css">
+  
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-okaidia.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="/pagefind/pagefind-ui.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+</head>
+
+<body><header>
+  <a href="/" class="logo">
+    <span>
+      CCH
+    </span>
+    <svg viewBox="-10 0 660 512">
+      <use href="/assets/img/coffee.svg#x"></use>
+    </svg>
+  </a>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/about">About</a> 
+    <span><a id="show-search">Click here</a> for search or press Cmd+K</span>
+  </nav>
+  <span>
+  </span>
+</header>
+
+  <main>
+    <article>
+      <h1>Calling F# from C# in Xamarin Studio</h1> 
+      <h2>2016-09-30</h2>
+      <p>I've been using Xamarin Studio for some time and now use it daily for my work with Mono. I've also been dabbling a bit in F# and have been keen to start using it at work. Untypically for a Xamarin Studio user I don't use it for building mobile apps but have been writing various parts of a production system which I'm slowly moving off Windows. Anyhow, what better place to start than converting some of the C# libraries to F#?</p>
+<h3>Setup</h3>
+<p>The setup should be very simple. A C# console application that calls an F# library. As you can see in this very simple example I've just created a standard C# console project that calls a standard F# library project. There are no special libraries required.</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F153605-sm.jpg&width=800&format=webp&via=transform 800w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F153605-sm.jpg&width=800&format=jpeg&via=transform" alt="" width="800" height="555"></picture></p>
+<p>Normally when working with Xamarin Studio adding a library project is much the same as you would do with Visual Studio. Be aware the referenced version of .NET might be different when creating a new project, the defaults for C# and F# are different on my system which I had to change (I needed to change it to Mono / .NET 4.5.).</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F154422-xs.jpg&width=400&format=webp&via=transform 400w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F154422-xs.jpg&width=400&format=jpeg&via=transform" alt="" width="400" height="125"></picture></p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F154725-xs.jpg&width=400&format=webp&via=transform 400w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F154725-xs.jpg&width=400&format=jpeg&via=transform" alt="" width="400" height="161"></picture></p>
+<p>So, once I have the correct framework referenced I just add the project as a reference.</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F154858-xs.jpg&width=400&format=webp&via=transform 400w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F154858-xs.jpg&width=400&format=jpeg&via=transform" alt="" width="400" height="94"></picture></p>
+<p>Great, now we're all good to go. Here's my crude F# library that I want to call.</p>
+<pre class="language-fsharp"><code class="language-fsharp">
+<span class="token keyword">namespace</span> fslib
+
+<span class="token keyword">type</span> <span class="token class-name">Greeter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span> 
+  <span class="token keyword">member</span> this<span class="token punctuation">.</span>Greeting <span class="token operator">=</span> <span class="token string">"Hello World!"</span>
+</code></pre>
+<p>And here's the C# code that calls the library in the console project.</p>
+<pre class="language-csharp"><code class="language-csharp">
+<span class="token keyword">using</span> <span class="token keyword">static</span> <span class="token class-name">System<span class="token punctuation">.</span>Console</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">{</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> greeter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">fslib<span class="token punctuation">.</span>Greeter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token class-name"><span class="token keyword">var</span></span> greeting <span class="token operator">=</span> greeter<span class="token punctuation">.</span>Greeting<span class="token punctuation">;</span>
+
+    <span class="token function">WriteLine</span><span class="token punctuation">(</span>greeting<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Fairly straightforward and if I hit the play button I get the output in the console I'm expecting.</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F155617-sm.jpg&width=800&format=webp&via=transform 800w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F155617-sm.jpg&width=800&format=jpeg&via=transform" alt="" width="800" height="561"></picture></p>
+<p>But although it works as expected the Xamarin Studio experience isn't so smooth. In my code editor the statement completion doesn't work and I have the unwanted red squigglies. If your project expands it looks like it's littered with errors.</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F160020-xs.jpg&width=400&format=webp&via=transform 400w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F160020-xs.jpg&width=400&format=jpeg&via=transform" alt="" width="400" height="286"></picture></p>
+<p>The way out of this is to reference the dll file and not the project itself. So untick the project in the Edit References dialog.</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F160148-xs.jpg&width=400&format=webp&via=transform 400w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F160148-xs.jpg&width=400&format=jpeg&via=transform" alt="" width="400" height="97"></picture></p>
+<p>And then browse to the dll file from the browse button on the .NET Assembly tab.</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F160654-xs.jpg&width=400&format=webp&via=transform 400w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F160654-xs.jpg&width=400&format=jpeg&via=transform" alt="" width="400" height="183"></picture></p>
+<p>Now if I build my project the red squigglies disappear and I have statement completion.</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F160849-sm.jpg&width=800&format=webp&via=transform 800w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F160849-sm.jpg&width=800&format=jpeg&via=transform" alt="" width="800" height="399"></picture></p>
+<p>However, when hit the play button I am no longer able to debug the F# code. I struggled with this for a while and should have guessed the Mono debug files are missing (a big thanks to Jason Imison from the Xamarin team for point this out to me <a href="https://twitter.com/JasonImison/status/781864690733445120">here</a>!). So just copy over the mdb file from the F# library and place it in the Debug folder of the C# project ...</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F161310-xs.jpg&width=400&format=webp&via=transform 400w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F161310-xs.jpg&width=400&format=jpeg&via=transform" alt="" width="400" height="158"></picture></p>
+<p>... and the debugging will work as expected.</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F161358-xs.jpg&width=400&format=webp&via=transform 400w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F161358-xs.jpg&width=400&format=jpeg&via=transform" alt="" width="400" height="163"></picture></p>
+<p>You'll need to do this with each build if your code changes but this can be done by adding a simple <code>cp</code> command to your build step.</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F162300-sm.jpg&width=800&format=webp&via=transform 800w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Fposts%2F20160930%2F162300-sm.jpg&width=800&format=jpeg&via=transform" alt="" width="800" height="398"></picture></p>
+<p>That's it. Hopefully the Xamarin team will get this fixed but if you follow these simple steps you can work effectively without too much bother!</p>
+
+    </article>
+  </main><footer>
+  <nav>
+    <ul>
+      <li><a href="">Home</a></li>
+      <li><a href="">About</a></li>
+    </ul>
+    <ul>
+      <li><a href="">Contact</a></li>
+      <li><a href="">Blog</a></li>
+    </ul>
+    <ul>
+      <li><a href="">GitHub</a></li>
+      <li><a href="">Twitter</a></li>
+    </ul>
+  </nav>
+</footer>
+
+  <script src="/pagefind/pagefind-ui.js" defer=""></script>
+  
+  <script src="/assets/js/main.js"></script>
+  
+</body>
+</html>

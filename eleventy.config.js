@@ -1,24 +1,37 @@
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
+import { execSync } from "child_process";
 import markdownIt from "markdown-it";
 import markdownItAttrs from "markdown-it-attrs";
+import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 
-export default function (eleventyConfig) {
+export default (eleventyConfig) => {
+  eleventyConfig.setUseGitIgnore(false);
+  eleventyConfig.addPassthroughCopy("./src/assets");
+
   let options = {
     html: true,
     breaks: true,
     linkify: true
   };
 
-  let markdownLib = markdownIt(options).use(markdownItAttrs);
+  eleventyConfig.addPassthroughCopy({
+    "./src/tech/assets/img": "./src/assets/img",
+  });
+
+  const markdownLib = markdownIt(options).use(markdownItAttrs);
 
   eleventyConfig.setLibrary("md", markdownLib);
-  eleventyConfig.addPassthroughCopy("./src/assets");
+  eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.addPlugin(eleventyImageTransformPlugin);
+  eleventyConfig.addFilter("toUTCString", (value) => value.toISOString().substring(0, 10));
+
+  eleventyConfig.on('afterBuild', () => {
+    execSync('pnpm build:index', { stdio: 'inherit' });
+  });
 
   return {
-    passthroughFileCopy: true,
     dir: {
-      input: "src",
+      input: "./src",
       output: "www",
     },
   };

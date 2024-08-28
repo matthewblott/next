@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-77648562-1"></script>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="One two buckle shoe">
+  <title>RESTful APIs With DreamFactory</title>
+  <!-- <link rel="stylesheet" href="/assets/css/theme-light.css" media="(prefers-color-scheme: light)"> -->
+  <!-- <link rel="stylesheet" href="/assets/css/theme-dark.css" media="(prefers-color-scheme: dark)"> -->
+  <link rel="stylesheet" href="/assets/css/theme-light.css">
+  
+  <link rel="stylesheet" href="/assets/css/site.css">
+  
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-okaidia.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="/pagefind/pagefind-ui.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+</head>
+
+<body><header>
+  <a href="/" class="logo">
+    <span>
+      CCH
+    </span>
+    <svg viewBox="-10 0 660 512">
+      <use href="/assets/img/coffee.svg#x"></use>
+    </svg>
+  </a>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/about">About</a> 
+    <span><a id="show-search">Click here</a> for search or press Cmd+K</span>
+  </nav>
+  <span>
+  </span>
+</header>
+
+  <div id="search-panel">
+    <div id="pagefind"></div>
+  </div>
+  <main>
+    <article>
+      <h1>RESTful APIs With DreamFactory</h1> 
+      <h2>The Problem</h2>
+<p>Most of the programming I have done over the past twenty years has been writing boring line of business applications and it's probably what any programmer reading this also does most of the time. There are lots of tools in the <a href="https://en.wikipedia.org/wiki/Low-code_development_platform">'low code'</a> area but they're usually targeted at analysts and managers rather than developers.</p>
+<p>I wanted something compliant with the <a href="https://jsonapi.org/">jsaonapi.org</a> specification and although there are things out there like <a href="https://loopback.io/">LoopBack</a> which are mature and well supported they all take a bit of setting up.</p>
+<p>I wanted to be able to point to a data source and convert it into a compliant RESTful API but I struggled to find anything that did this out of the box. <a href="https://postgrest.org/">PostgREST</a> is a good example of something that does what I want and is an excellent project but it only works with PostgreSQL. I do a lot of .NET coding and I recently discovered <a href="https://www.jsonapi.net/">JsonApiDotNetCore</a> which looks promising but it's relatively new.</p>
+<p>Eventually I came across <a href="https://www.dreamfactory.com/">DreamFactory</a> which is both mature and well supported. There is some setting up but it effectively gives you a full API for any database with minimal effort. In fact it appears to be quite a powerful tool and I've barely scratched the surface.</p>
+<h2>DreamFactory Setup</h2>
+<p>For this example I'm going to use SQLite but most well known databases are supported along with various other service types. The database I'm using can be downloaded directly from <a href="https://github.com/matthewblott/northwind-sqlite/blob/master/dist/northwind.db">here</a>. It's a copy of the famous Northwind database familiar to anyone who remembers programming with MS Access back in the day! No setup for the database is required but you will need PHP installed.</p>
+<p>Once the database is downloaded and ready you'll need a copy of DreamFactory which we'll get using Git:</p>
+<pre><code>
+git clone https://github.com/dreamfactorysoftware/dreamfactory
+
+</code></pre>
+<p>Once the repo is cloned <code>cd</code> into the directory:</p>
+<pre><code>
+cd dreamfactory
+
+</code></pre>
+<p>You'll also need PHP's Composer installed for the next step:</p>
+<pre><code>composer install
+
+</code></pre>
+<p>Once that's done <code>cd</code> into the public directory:</p>
+<pre><code>
+cd public
+
+</code></pre>
+<p>Now we're ready to run DreamFactory which can be done running the following:</p>
+<pre><code>
+php -S localhost:8000
+
+</code></pre>
+<h3>Create Administrator</h3>
+<p>If you now browse to <a href="http://localhost:8000"><code>localhost:8000</code></a> you should see a prompt to create an administrator:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-login.jpg&width=364&format=webp&via=transform 364w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-login.jpg&width=364&format=jpeg&via=transform" alt="Login" width="364" height="449"></picture></p>
+<p>Fill the details out similar to as shown above and click the CREATE button. You will be redirected to the main dashboard:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-dashboard.jpg&width=811&format=webp&via=transform 811w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-dashboard.jpg&width=811&format=jpeg&via=transform" alt="Login" width="811" height="445"></picture></p>
+<h3>Create Service</h3>
+<p>Click the Services tab along the top and the click the Create button. Select the correct Service Type and fill out the details as shown below:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-create-service.jpg&width=299&format=webp&via=transform 299w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-create-service.jpg&width=299&format=jpeg&via=transform" alt="Create Service" width="299" height="241"></picture></p>
+<p>Click the Next button and then enter the correct database path for the Northwind SQLite database that was downloaded earlier. Your path will be different to mine:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-database-path.jpg&width=640&format=webp&via=transform 640w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-database-path.jpg&width=640&format=jpeg&via=transform" alt="Database Path" width="640" height="404"></picture></p>
+<p>Click Save and you should see your newe service added to the list of managed services:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-services.jpg&width=608&format=webp&via=transform 608w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-services.jpg&width=608&format=jpeg&via=transform" alt="Services" width="608" height="329"></picture></p>
+<h3>Create Application</h3>
+<p>Next click the Apps tab along the top and click the Create button to create a new application. Fill out the details as shown below:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-create-app.jpg&width=419&format=webp&via=transform 419w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-create-app.jpg&width=419&format=jpeg&via=transform" alt="Create App" width="419" height="392"></picture></p>
+<p>Click Save and the application will be added to the list of managed applications:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-apps.jpg&width=609&format=webp&via=transform 609w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-apps.jpg&width=609&format=jpeg&via=transform" alt="Apps" width="609" height="252"></picture></p>
+<h3>Create Role</h3>
+<p>Click the Roles tab along the top and then click the Create button to create a new role. Fill out the Basic section as shown below:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-role-basic.jpg&width=308&format=webp&via=transform 308w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-role-basic.jpg&width=308&format=jpeg&via=transform" alt="Role Basic" width="308" height="241"></picture></p>
+<p>Click Next and then fill out the Access section as shown below. Make sure to select the service created in the previous section and select all available HTTP verbs under Access:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-role-access.jpg&width=637&format=webp&via=transform 637w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-role-access.jpg&width=637&format=jpeg&via=transform" alt="Role Access" width="637" height="240"></picture></p>
+<p>Click Save and the role will be added to the list of managed roles:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-roles.jpg&width=605&format=webp&via=transform 605w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-roles.jpg&width=605&format=jpeg&via=transform" alt="Roles" width="605" height="70"></picture></p>
+<h3>Create Service User</h3>
+<p>Finally click the Users tab along the top and then click the Create button to create a new user. Fill out the Basic section as shown below:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-create-user.jpg&width=585&format=webp&via=transform 585w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-create-user.jpg&width=585&format=jpeg&via=transform" alt="Create User" width="585" height="372"></picture></p>
+<p>Click the Roles section and select the role created in the previous step.</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-set-user-role.jpg&width=263&format=webp&via=transform 263w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-set-user-role.jpg&width=263&format=jpeg&via=transform" alt="Set User Role" width="263" height="257"></picture></p>
+<p>Click Save and the new user will appear in the users list:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-users.jpg&width=607&format=webp&via=transform 607w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-users.jpg&width=607&format=jpeg&via=transform" alt="Users" width="607" height="72"></picture></p>
+<p>That's it, you now have a fully managed RESTful API for your database! To test it click the API Docs tab along the top which will then present you with a list of options:</p>
+<h3>Potential Gotchas</h3>
+<p>There are a couple of potential gotchas to look out for. It might be necessary to add an entry for CORS. This is found by selecting the Config tab along the top. Below is an example of what the entries should look like:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-cors.jpg&width=199&format=webp&via=transform 199w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-cors.jpg&width=199&format=jpeg&via=transform" alt="CORS" width="199" height="428"></picture></p>
+<p>You will also require an API Key for the application. This key is generated when the application is created and can easily be found with the rest of the application's details:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-key.jpg&width=198&format=webp&via=transform 198w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-key.jpg&width=198&format=jpeg&via=transform" alt="Key" width="198" height="205"></picture></p>
+<h2>Testing The API</h2>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-api-docs.jpg&width=620&format=webp&via=transform 620w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-api-docs.jpg&width=620&format=jpeg&via=transform" alt="API Docs" width="620" height="311"></picture></p>
+<p>There's lots of options for testing but the simple example below retrieves the records from the Employees table:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-api-execute.jpg&width=620&format=webp&via=transform 620w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-api-execute.jpg&width=620&format=jpeg&via=transform" alt="API Docs" width="620" height="309"></picture></p>
+<p>Click execute and the records are returned. The response also provides an example to use with Curl:</p>
+<p><picture><source type="image/webp" srcset="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-api-response.jpg&width=596&format=webp&via=transform 596w"><img src="/.11ty/image/?src=src%2Fassets%2Fimg%2Ftech%2F2023-07-14-api-response.jpg&width=596&format=jpeg&via=transform" alt="API Docs" width="596" height="333"></picture></p>
+<h2>Conclusion</h2>
+<p>There's a lot more to explore with DreamFactory. It appears to be quite powerful and you get a lot for free. There is also a paid option which has lots of other goodies but I was just looking for something to create a RESTful API out the box and this ticks all those boxes. I'm surprised it's not more popular!</p>
+
+    </article>
+  </main><footer>
+  <nav>
+    <ul>
+      <li><a href="">Home</a></li>
+      <li><a href="">About</a></li>
+    </ul>
+    <ul>
+      <li><a href="">Contact</a></li>
+      <li><a href="">Blog</a></li>
+    </ul>
+    <ul>
+      <li><a href="">GitHub</a></li>
+      <li><a href="">Twitter</a></li>
+    </ul>
+  </nav>
+</footer>
+
+
+  <script src="/pagefind/pagefind-ui.js" defer=""></script>
+  
+  <script src="/assets/js/main.js"></script>
+  
+
+</body>
+</html>

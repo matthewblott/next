@@ -2,15 +2,22 @@
 layout: layouts/base.html
 title: Fubar
 pagination:
-  data: collections.post
+  data: collections.tech
   reverse: true
-  size: 2
-  alias: posts
+  size: 5
+  alias: bar 
 ---
 
 <ul>
-{%- for post in posts -%}
-  <li>{{ post.data.title }}</li>
+{%- for post in bar -%}
+  <li>
+    <h3>{{ post.data.title }}</h3>
+    <h4>{{ post.data.date | toUTCString }}</h4>
+  
+    <p>
+      <a href="{{ post.url }}">More ...</a>
+    </p>
+  </li>
 {%- endfor -%}
 </ul>
 

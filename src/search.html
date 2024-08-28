@@ -3,11 +3,30 @@ layout: layouts/base.html
 title: Search
 ---
 
-<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
-<script src="/pagefind/pagefind-ui.js"></script>
-<div id="search"></div>
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css">
+<script src="/pagefind/pagefind-ui.js" defer></script>
 <script>
   window.addEventListener('DOMContentLoaded', (event) => {
-    new PagefindUI({ element: "#search", showSubResults: true });
+    let search = undefined; 
+
+    document.getElementById("search-button").onclick = function (e) {
+      e.target.disabled = true;
+      search = new PagefindUI({ element: "#searchx", showSubResults: true, autofocus: true });
+
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' || event.code === 'Escape') {
+          if(search !== undefined) {
+            document.getElementById("search-button").disabled = false;
+            search.destroy()
+          }
+        }
+      });
+    };
+
   });
 </script>
+
+
+<button id="search-button">Search</button>
+
+<div style="height: 150px;"></div>
