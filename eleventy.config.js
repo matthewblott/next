@@ -3,6 +3,7 @@ import { execSync } from "child_process";
 import markdownIt from "markdown-it";
 import markdownItAttrs from "markdown-it-attrs";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
+import * as cheerio from 'cheerio'
 
 export default (eleventyConfig) => {
   eleventyConfig.setUseGitIgnore(false);
@@ -24,6 +25,20 @@ export default (eleventyConfig) => {
   eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.addPlugin(eleventyImageTransformPlugin);
   eleventyConfig.addFilter("toUTCString", (value) => value.toISOString().substring(0, 10));
+
+  eleventyConfig.addFilter("stripHtml", (value) => {
+    function extractFirst50Words(text) {
+      const words = text.split(/\s+/);
+      const first50Words = words.slice(0, 50);
+      return first50Words.join(' ') + (words.length > 50 ? ' ...' : '');
+    }
+
+    const $ = cheerio.load(value);
+    let text = $.text();
+
+    // return text.substring(0, 150) + " ...";
+    return extractFirst50Words(text); 
+  });
 
   eleventyConfig.on('afterBuild', () => {
     execSync('pnpm build:index', { stdio: 'inherit' });
