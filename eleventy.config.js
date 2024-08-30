@@ -16,7 +16,7 @@ export default (eleventyConfig) => {
   };
 
   eleventyConfig.addPassthroughCopy({
-    "./src/tech/assets/img": "./src/assets/img",
+    // "./src/tech/assets/img": "./src/assets/img",
   });
 
   const markdownLib = markdownIt(options).use(markdownItAttrs);
