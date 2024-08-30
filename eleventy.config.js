@@ -34,9 +34,9 @@ export default (eleventyConfig) => {
     }
 
     const $ = cheerio.load(value);
+
     let text = $.text();
 
-    // return text.substring(0, 150) + " ...";
     return extractFirst50Words(text); 
   });
 
@@ -46,7 +46,7 @@ export default (eleventyConfig) => {
 
   return {
     dir: {
-      input: "./src",
+      input: "src",
       output: "www",
     },
   };
