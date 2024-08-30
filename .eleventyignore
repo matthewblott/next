@@ -195,3 +195,7 @@ www*
 
 # ignore symlink for the 'tech' repo
 src/assets/img/tech
+
+# Ignore minimised files
+src/assets/css/site.min.css
+src/assets/js/main.min.js
