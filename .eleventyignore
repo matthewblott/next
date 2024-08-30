@@ -187,8 +187,8 @@ Temporary Items
 pnpm-lock.yaml
 
 # posts
-src/tech
-src/other-stuff
+# src/tech
+# src/other-stuff
 
 # ignore deployment files
 www*
